@@ -2,7 +2,8 @@ const TelegramBot = require('node-telegram-bot-api');
 const token = "7495174688:AAElcfwgxlkW_w0QgSSRuUAq-2dep8YjGvY";
 const bot = new TelegramBot(token, {polling: true});
 
-bot.on("photo", (msg) => {
+try {
+    bot.on("photo", (msg) => {
     const chatId = msg.chat.id;
     const fileLength = msg.photo.length;
     const fileId = msg.photo[fileLength - 1].file_id;
@@ -24,3 +25,6 @@ bot.on("video", (msg) => {
         return bot.sendMessage(chatId, url);
     })
 })
+} catch (error) {
+    console.log(error)
+}
