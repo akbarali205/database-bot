@@ -57,7 +57,7 @@ const express = require('express');
 const token = process.env.TELEGRAM_BOT_TOKEN || '7495174688:AAElcfwgxlkW_w0QgSSRuUAq-2dep8YjGvY';
 
 // Webhook URL
-const url = process.env.WEBHOOK_URL || 'https://database-bot.vercel.app/';
+const url = process.env.WEBHOOK_URL || 'https://database-bot.vercel.app';
 
 // Express ilovasini yarating
 const app = express();
