@@ -27,7 +27,31 @@
 
 
 
+// const TelegramBot = require('node-telegram-bot-api');
+
+// // Bot tokenini o'zingizning tokeningiz bilan almashtiring
+// const token = process.env.TELEGRAM_BOT_TOKEN || '7495174688:AAElcfwgxlkW_w0QgSSRuUAq-2dep8YjGvY';
+
+// // Webhook URL
+// const url = process.env.WEBHOOK_URL || 'https://database-bot.vercel.app/';
+
+// // Botni webhook rejimida ishga tushirish
+// const bot = new TelegramBot(token, { webHook: { port: process.env.PORT || 3000 } });
+
+// // Webhook'ni sozlash
+// bot.setWebHook(`${url}/bot${token}`);
+
+// bot.on('message', (msg) => {
+//   const chatId = msg.chat.id;
+//   const text = msg.text;
+
+//   // Botga xabar kelganda javob qaytarish
+//   bot.sendMessage(chatId, `Siz yozdingiz: ${text}`);
+// });
+
+
 const TelegramBot = require('node-telegram-bot-api');
+const express = require('express');
 
 // Bot tokenini o'zingizning tokeningiz bilan almashtiring
 const token = process.env.TELEGRAM_BOT_TOKEN || '7495174688:AAElcfwgxlkW_w0QgSSRuUAq-2dep8YjGvY';
@@ -35,16 +59,30 @@ const token = process.env.TELEGRAM_BOT_TOKEN || '7495174688:AAElcfwgxlkW_w0QgSSR
 // Webhook URL
 const url = process.env.WEBHOOK_URL || 'https://database-bot.vercel.app/';
 
-// Botni webhook rejimida ishga tushirish
-const bot = new TelegramBot(token, { webHook: { port: process.env.PORT || 3000 } });
+// Express ilovasini yarating
+const app = express();
+app.use(express.json());
 
-// Webhook'ni sozlash
+// Botni webhook rejimida ishga tushiring
+const bot = new TelegramBot(token);
 bot.setWebHook(`${url}/bot${token}`);
 
+// Bot uchun endpoint sozlash
+app.post(`/bot${token}`, (req, res) => {
+  bot.processUpdate(req.body);
+  res.sendStatus(200);
+});
+
+// Oddiy xabarlarni qayta ishlash
 bot.on('message', (msg) => {
   const chatId = msg.chat.id;
   const text = msg.text;
 
-  // Botga xabar kelganda javob qaytarish
   bot.sendMessage(chatId, `Siz yozdingiz: ${text}`);
+});
+
+// Serverni ishga tushirish
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
