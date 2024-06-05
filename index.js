@@ -52,6 +52,7 @@
 
 const TelegramBot = require('node-telegram-bot-api');
 const express = require('express');
+
 // Bot tokenini o'zingizning tokeningiz bilan almashtiring
 const token = process.env.TELEGRAM_BOT_TOKEN || '7495174688:AAElcfwgxlkW_w0QgSSRuUAq-2dep8YjGvY';
 
